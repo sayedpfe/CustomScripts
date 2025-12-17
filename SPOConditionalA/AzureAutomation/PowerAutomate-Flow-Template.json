@@ -1,0 +1,164 @@
+{
+  "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {},
+  "triggers": {
+    "When_item_is_created_or_modified": {
+      "type": "ApiConnection",
+      "inputs": {
+        "host": {
+          "connection": {
+            "name": "@parameters('$connections')['sharepointonline']['connectionId']"
+          }
+        },
+        "method": "get",
+        "path": "/datasets/@{encodeURIComponent(encodeURIComponent('https://YOUR-TENANT.sharepoint.com/sites/YOUR-SITE'))}/tables/@{encodeURIComponent(encodeURIComponent('YOUR-LIST-ID'))}/onupdateditems"
+      },
+      "recurrence": {
+        "frequency": "Minute",
+        "interval": 5
+      },
+      "splitOn": "@triggerBody()?['value']"
+    }
+  },
+  "actions": {
+    "Condition_-_Check_if_Approved": {
+      "type": "If",
+      "expression": {
+        "and": [
+          {
+            "equals": [
+              "@triggerBody()?['Status']?['Value']",
+              "Approved"
+            ]
+          }
+        ]
+      },
+      "actions": {
+        "Update_Status_to_Processing": {
+          "type": "ApiConnection",
+          "inputs": {
+            "host": {
+              "connection": {
+                "name": "@parameters('$connections')['sharepointonline']['connectionId']"
+              }
+            },
+            "method": "patch",
+            "path": "/datasets/@{encodeURIComponent(encodeURIComponent('https://YOUR-TENANT.sharepoint.com/sites/YOUR-SITE'))}/tables/@{encodeURIComponent(encodeURIComponent('YOUR-LIST-ID'))}/items/@{triggerBody()?['ID']}",
+            "body": {
+              "Status": {
+                "Value": "Processing"
+              },
+              "ProcessingStarted": "@utcNow()"
+            }
+          },
+          "runAfter": {}
+        },
+        "Call_Azure_Automation_Webhook": {
+          "type": "Http",
+          "inputs": {
+            "method": "POST",
+            "uri": "PASTE-YOUR-WEBHOOK-URL-HERE",
+            "headers": {
+              "Content-Type": "application/json"
+            },
+            "body": {
+              "SiteUrl": "@triggerBody()?['SiteURL']",
+              "AuthenticationContextName": "@triggerBody()?['AuthenticationContextName']",
+              "RequestorEmail": "@triggerBody()?['RequestorEmail']",
+              "RequestId": "@triggerBody()?['ID']"
+            }
+          },
+          "runAfter": {
+            "Update_Status_to_Processing": [
+              "Succeeded"
+            ]
+          }
+        },
+        "Delay_for_Runbook_Completion": {
+          "type": "Wait",
+          "inputs": {
+            "interval": {
+              "count": 1,
+              "unit": "Minute"
+            }
+          },
+          "runAfter": {
+            "Call_Azure_Automation_Webhook": [
+              "Succeeded"
+            ]
+          }
+        },
+        "Update_Status_to_Completed": {
+          "type": "ApiConnection",
+          "inputs": {
+            "host": {
+              "connection": {
+                "name": "@parameters('$connections')['sharepointonline']['connectionId']"
+              }
+            },
+            "method": "patch",
+            "path": "/datasets/@{encodeURIComponent(encodeURIComponent('https://YOUR-TENANT.sharepoint.com/sites/YOUR-SITE'))}/tables/@{encodeURIComponent(encodeURIComponent('YOUR-LIST-ID'))}/items/@{triggerBody()?['ID']}",
+            "body": {
+              "Status": {
+                "Value": "Completed"
+              },
+              "ProcessingCompleted": "@utcNow()",
+              "Result": "Conditional Access Policy successfully applied"
+            }
+          },
+          "runAfter": {
+            "Delay_for_Runbook_Completion": [
+              "Succeeded"
+            ]
+          }
+        },
+        "Send_Success_Email": {
+          "type": "ApiConnection",
+          "inputs": {
+            "host": {
+              "connection": {
+                "name": "@parameters('$connections')['office365']['connectionId']"
+              }
+            },
+            "method": "post",
+            "path": "/v2/Mail",
+            "body": {
+              "To": "@triggerBody()?['RequestorEmail']",
+              "Subject": "✅ Conditional Access Policy Applied - Request #@{triggerBody()?['ID']}",
+              "Body": "<p>Hello,</p><p>Your request to apply a conditional access policy has been <strong>completed successfully</strong>.</p><p><strong>Details:</strong></p><ul><li>Site URL: @{triggerBody()?['SiteURL']}</li><li>Authentication Context: @{triggerBody()?['AuthenticationContextName']}</li><li>Request ID: @{triggerBody()?['ID']}</li><li>Processed: @{utcNow()}</li></ul><p>The conditional access policy is now active on your site.</p><p>Best regards,<br>IT Automation</p>",
+              "Importance": "Normal"
+            }
+          },
+          "runAfter": {
+            "Update_Status_to_Completed": [
+              "Succeeded"
+            ]
+          }
+        }
+      },
+      "runAfter": {},
+      "else": {
+        "actions": {}
+      }
+    }
+  },
+  "outputs": {},
+  "parameters": {
+    "$connections": {
+      "value": {
+        "sharepointonline": {
+          "connectionId": "/subscriptions/{subscription-id}/resourceGroups/{resource-group}/providers/Microsoft.Web/connections/sharepointonline",
+          "connectionName": "sharepointonline",
+          "id": "/subscriptions/{subscription-id}/providers/Microsoft.Web/locations/{location}/managedApis/sharepointonline"
+        },
+        "office365": {
+          "connectionId": "/subscriptions/{subscription-id}/resourceGroups/{resource-group}/providers/Microsoft.Web/connections/office365",
+          "connectionName": "office365",
+          "id": "/subscriptions/{subscription-id}/providers/Microsoft.Web/locations/{location}/managedApis/office365"
+        }
+      },
+      "type": "Object"
+    }
+  }
+}

@@ -1,0 +1,200 @@
+{
+    "value": [
+        {
+            "searchTerms": [
+                "master",
+                "services",
+                "agreement"
+            ],
+            "hitsContainers": [
+                {
+                    "hits": [
+                        {
+                            "hitId": "01REGEC6T3ERANBRW6OBGLH74V3EOYC3YW",
+                            "rank": 1,
+                            "summary": "Activate - Power Platform - Copilot Studio Click to edit Master title style Click to edit Master text styles Second level Third level Fourth level Fifth level WorkshopPlus - Power<ddd/>",
+                            "resource": {
+                                "@odata.type": "#microsoft.graph.driveItem",
+                                "size": 28845295,
+                                "fileSystemInfo": {
+                                    "createdDateTime": "2025-11-21T08:29:12Z",
+                                    "lastModifiedDateTime": "2025-11-21T08:30:12Z"
+                                },
+                                "listItem": {
+                                    "@odata.type": "#microsoft.graph.listItem",
+                                    "id": "d040247b-dec6-4c70-b3ff-95d91d816f16",
+                                    "fields": {}
+                                },
+                                "id": "01REGEC6T3ERANBRW6OBGLH74V3EOYC3YW",
+                                "createdBy": {
+                                    "user": {
+                                        "displayName": "MOD Administrator",
+                                        "email": "admin@m365cpi90282478.onmicrosoft.com"
+                                    }
+                                },
+                                "createdDateTime": "2025-11-21T08:29:12Z",
+                                "lastModifiedBy": {
+                                    "user": {
+                                        "displayName": "MOD Administrator",
+                                        "email": "admin@m365cpi90282478.onmicrosoft.com"
+                                    }
+                                },
+                                "lastModifiedDateTime": "2025-11-21T08:30:12Z",
+                                "name": "WorkshopPlus - Power Platform - Copilot Studio.pptx",
+                                "parentReference": {
+                                    "driveId": "b!e7QGf4uO_UWj6EHvGlY5NhSzEt4X4gVLsxV0gOeNVBLWQARS7-qJQL1vxM46cuAx",
+                                    "id": "01REGEC6UDSWLKNL4UKVC3GXC7L2DBCTYE",
+                                    "sharepointIds": {
+                                        "listId": "520440d6-eaef-4089-bd6f-c4ce3a72e031",
+                                        "listItemId": "500",
+                                        "listItemUniqueId": "d040247b-dec6-4c70-b3ff-95d91d816f16"
+                                    },
+                                    "siteId": "m365cpi90282478-my.sharepoint.com,7f06b47b-8e8b-45fd-a3e8-41ef1a563936,de12b314-e217-4b05-b315-7480e78d5412"
+                                },
+                                "webUrl": "https://m365cpi90282478-my.sharepoint.com/personal/admin_m365cpi90282478_onmicrosoft_com/Documents/NordLB/WorkshopPlus - Power Platform - Copilot Studio.pptx"
+                            }
+                        },
+                        {
+                            "hitId": "01REGEC6VBEN6FSAADHRAZBTUWA25HBCIT",
+                            "rank": 2,
+                            "summary": "Governance, Security, and Compliance of Copilot for Microsoft 365 Extensibility with Graph Connectors Click to edit Master title style Click to edit Master text styles Second level<ddd/>",
+                            "resource": {
+                                "@odata.type": "#microsoft.graph.driveItem",
+                                "size": 12352476,
+                                "fileSystemInfo": {
+                                    "createdDateTime": "2025-10-02T14:06:12Z",
+                                    "lastModifiedDateTime": "2025-09-24T20:13:28Z"
+                                },
+                                "listItem": {
+                                    "@odata.type": "#microsoft.graph.listItem",
+                                    "id": "597c23a1-0300-413c-90ce-9606ba708913",
+                                    "fields": {}
+                                },
+                                "id": "01REGEC6VBEN6FSAADHRAZBTUWA25HBCIT",
+                                "createdBy": {
+                                    "user": {
+                                        "displayName": "MOD Administrator",
+                                        "email": "admin@m365cpi90282478.onmicrosoft.com"
+                                    }
+                                },
+                                "createdDateTime": "2025-10-02T14:06:12Z",
+                                "lastModifiedBy": {
+                                    "user": {
+                                        "displayName": "MOD Administrator",
+                                        "email": "admin@m365cpi90282478.onmicrosoft.com"
+                                    }
+                                },
+                                "lastModifiedDateTime": "2025-09-24T20:13:28Z",
+                                "name": "Copilot Connector Governance, Security, and Compliance.pptx",
+                                "parentReference": {
+                                    "driveId": "b!e7QGf4uO_UWj6EHvGlY5NhSzEt4X4gVLsxV0gOeNVBLWQARS7-qJQL1vxM46cuAx",
+                                    "id": "01REGEC6SFU7CUZYLTQBCLZTDW2CAVXHQZ",
+                                    "sharepointIds": {
+                                        "listId": "520440d6-eaef-4089-bd6f-c4ce3a72e031",
+                                        "listItemId": "485",
+                                        "listItemUniqueId": "597c23a1-0300-413c-90ce-9606ba708913"
+                                    },
+                                    "siteId": "m365cpi90282478-my.sharepoint.com,7f06b47b-8e8b-45fd-a3e8-41ef1a563936,de12b314-e217-4b05-b315-7480e78d5412"
+                                },
+                                "webUrl": "https://m365cpi90282478-my.sharepoint.com/personal/admin_m365cpi90282478_onmicrosoft_com/Documents/Conti Tires Agent Hackathon/Day 1/Copilot Connector Governance, Security, and Compliance.pptx"
+                            }
+                        },
+                        {
+                            "hitId": "01REGEC6UAOME2U4O4DFBKOXQKVVLNRNXO",
+                            "rank": 3,
+                            "summary": "Asset Title Click to edit Master title style Click to edit Master text styles Second level Third level Fourth level Fifth level Power Bi Dark Power Bi Light Power Automate Dark<ddd/>",
+                            "resource": {
+                                "@odata.type": "#microsoft.graph.driveItem",
+                                "size": 596790,
+                                "fileSystemInfo": {
+                                    "createdDateTime": "2025-10-02T14:05:59Z",
+                                    "lastModifiedDateTime": "2025-09-25T05:23:32Z"
+                                },
+                                "listItem": {
+                                    "@odata.type": "#microsoft.graph.listItem",
+                                    "id": "aa097380-dc71-4219-a75e-0aad56d8b6ee",
+                                    "fields": {}
+                                },
+                                "id": "01REGEC6UAOME2U4O4DFBKOXQKVVLNRNXO",
+                                "createdBy": {
+                                    "user": {
+                                        "displayName": "MOD Administrator",
+                                        "email": "admin@m365cpi90282478.onmicrosoft.com"
+                                    }
+                                },
+                                "createdDateTime": "2025-10-02T14:05:59Z",
+                                "lastModifiedBy": {
+                                    "user": {
+                                        "displayName": "MOD Administrator",
+                                        "email": "admin@m365cpi90282478.onmicrosoft.com"
+                                    }
+                                },
+                                "lastModifiedDateTime": "2025-09-25T05:23:32Z",
+                                "name": "Agent Governance Overview.pptx",
+                                "parentReference": {
+                                    "driveId": "b!e7QGf4uO_UWj6EHvGlY5NhSzEt4X4gVLsxV0gOeNVBLWQARS7-qJQL1vxM46cuAx",
+                                    "id": "01REGEC6SFU7CUZYLTQBCLZTDW2CAVXHQZ",
+                                    "sharepointIds": {
+                                        "listId": "520440d6-eaef-4089-bd6f-c4ce3a72e031",
+                                        "listItemId": "481",
+                                        "listItemUniqueId": "aa097380-dc71-4219-a75e-0aad56d8b6ee"
+                                    },
+                                    "siteId": "m365cpi90282478-my.sharepoint.com,7f06b47b-8e8b-45fd-a3e8-41ef1a563936,de12b314-e217-4b05-b315-7480e78d5412"
+                                },
+                                "webUrl": "https://m365cpi90282478-my.sharepoint.com/personal/admin_m365cpi90282478_onmicrosoft_com/Documents/Conti Tires Agent Hackathon/Day 1/Agent Governance Overview.pptx"
+                            }
+                        },
+                        {
+                            "hitId": "01REGEC6RBX6NO6WOB4FDJMHEQ4G7DLAXG",
+                            "rank": 4,
+                            "summary": "Asset Title Click to edit Master title style Click to edit Master text styles Second level Third level Fourth level Fifth level Click to edit Master text styles Second level Third<ddd/>",
+                            "resource": {
+                                "@odata.type": "#microsoft.graph.driveItem",
+                                "size": 153617341,
+                                "fileSystemInfo": {
+                                    "createdDateTime": "2025-10-02T14:05:59Z",
+                                    "lastModifiedDateTime": "2025-09-25T11:40:25Z"
+                                },
+                                "listItem": {
+                                    "@odata.type": "#microsoft.graph.listItem",
+                                    "id": "ef9abf21-c159-46e1-961c-90e1be3582e6",
+                                    "fields": {}
+                                },
+                                "id": "01REGEC6RBX6NO6WOB4FDJMHEQ4G7DLAXG",
+                                "createdBy": {
+                                    "user": {
+                                        "displayName": "MOD Administrator",
+                                        "email": "admin@m365cpi90282478.onmicrosoft.com"
+                                    }
+                                },
+                                "createdDateTime": "2025-10-02T14:05:59Z",
+                                "lastModifiedBy": {
+                                    "user": {
+                                        "displayName": "MOD Administrator",
+                                        "email": "admin@m365cpi90282478.onmicrosoft.com"
+                                    }
+                                },
+                                "lastModifiedDateTime": "2025-09-25T11:40:25Z",
+                                "name": "AI Agent Governance - Custom Engine Agents.pptx",
+                                "parentReference": {
+                                    "driveId": "b!e7QGf4uO_UWj6EHvGlY5NhSzEt4X4gVLsxV0gOeNVBLWQARS7-qJQL1vxM46cuAx",
+                                    "id": "01REGEC6SFU7CUZYLTQBCLZTDW2CAVXHQZ",
+                                    "sharepointIds": {
+                                        "listId": "520440d6-eaef-4089-bd6f-c4ce3a72e031",
+                                        "listItemId": "482",
+                                        "listItemUniqueId": "ef9abf21-c159-46e1-961c-90e1be3582e6"
+                                    },
+                                    "siteId": "m365cpi90282478-my.sharepoint.com,7f06b47b-8e8b-45fd-a3e8-41ef1a563936,de12b314-e217-4b05-b315-7480e78d5412"
+                                },
+                                "webUrl": "https://m365cpi90282478-my.sharepoint.com/personal/admin_m365cpi90282478_onmicrosoft_com/Documents/Conti Tires Agent Hackathon/Day 1/AI Agent Governance - Custom Engine Agents.pptx"
+                            }
+                        }
+                    ],
+                    "total": 4,
+                    "moreResultsAvailable": false
+                }
+            ]
+        }
+    ],
+    "@odata.context": "https://graph.microsoft.com/v1.0/$metadata#Collection(microsoft.graph.searchResponse)"
+}

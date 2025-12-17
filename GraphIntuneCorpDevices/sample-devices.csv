@@ -1,0 +1,7 @@
+ImportedDeviceIdentifier,ImportedDeviceIdentityType,Description
+900111222333444,imei,iPhone 15 Pro Max
+900222333444555,imei,Samsung Galaxy S24 Ultra
+900333444555666,imei,Google Pixel 9 Pro
+C02XYZ123ABC,serialNumber,MacBook Pro 16
+LAPTOPSERIAL001,serialNumber,Dell XPS 15
+TABLETSERIAL001,serialNumber,iPad Pro 12.9
