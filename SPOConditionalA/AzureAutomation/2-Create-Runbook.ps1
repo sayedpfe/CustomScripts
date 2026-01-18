@@ -32,14 +32,14 @@ $runbookContent = @'
     Apply Conditional Access Policy to SharePoint Site
 
 .DESCRIPTION
-    This runbook applies a conditional access policy to a SharePoint site.
+    This runbook applies a conditional access policy to a SharePoint site using SharePoint Admin CSOM.
     It is triggered by Power Automate via webhook.
 
 .PARAMETER WebhookData
     Data passed from Power Automate webhook
 
 .NOTES
-    Requires: PnP.PowerShell module
+    Uses: Built-in modules only (no external dependencies)
     Permissions: SharePoint Administrator role (via Managed Identity)
 #>
 
@@ -59,10 +59,131 @@ Write-Log "========================================" "INFO"
 Write-Log "Conditional Access Policy Application" "INFO"
 Write-Log "========================================" "INFO"
 
+# NOTE: Azure Automation uses Windows PowerShell 5.1
+# We'll use PowerShell remoting to call Set-SPOSite on behalf of the managed identity
+
 try {
     # Parse webhook data
     if ($WebhookData) {
         Write-Log "Webhook triggered - parsing input data..." "INFO"
+        
+        $requestBody = $WebhookData.RequestBody
+        if ($requestBody) {
+            $inputData = $requestBody | ConvertFrom-Json
+        } else {
+            throw "No request body received from webhook"
+        }
+    } else {
+        throw "No webhook data received. This runbook must be triggered via webhook."
+    }
+
+    # Extract parameters
+    $siteUrl = $inputData.SiteUrl
+    $authContextName = $inputData.AuthenticationContextName
+    $requestorEmail = $inputData.RequestorEmail
+    $requestId = $inputData.RequestId
+
+    Write-Log "Input Parameters:" "INFO"
+    Write-Log "  Site URL: $siteUrl" "INFO"
+    Write-Log "  Auth Context: $authContextName" "INFO"
+    Write-Log "  Requestor: $requestorEmail" "INFO"
+    Write-Log "  Request ID: $requestId" "INFO"
+
+    # Validate inputs
+    if (-not $siteUrl -or -not $authContextName) {
+        throw "Missing required parameters: SiteUrl and AuthenticationContextName are required"
+    }
+
+    # Get SharePoint admin URL from site URL
+    if ($siteUrl -match "https://([^.]+)\.sharepoint\.com") {
+        $tenantName = $Matches[1]
+        $adminUrl = "https://$tenantName-admin.sharepoint.com"
+    } else {
+        throw "Invalid SharePoint site URL format: $siteUrl"
+    }
+
+    Write-Log "Admin URL: $adminUrl" "INFO"
+    
+    # Connect using Managed Identity
+    Write-Log "Connecting with Managed Identity..." "INFO"
+    try {
+        Connect-AzAccount -Identity | Out-Null
+        Write-Log "✅ Connected to Azure with Managed Identity" "SUCCESS"
+    } catch {
+        throw "Failed to connect with Managed Identity: $($_.Exception.Message)"
+    }
+
+    # Get access token for SharePoint
+    Write-Log "Getting SharePoint access token..." "INFO"
+    try {
+        $token = (Get-AzAccessToken -ResourceUrl "https://$tenantName.sharepoint.com").Token
+        Write-Log "✅ Got access token" "SUCCESS"
+    } catch {
+        throw "Failed to get access token: $($_.Exception.Message)"
+    }
+
+    # Use SharePoint Online Management Shell cmdlets via runbook worker
+    Write-Log "Installing SharePoint Online Management Shell..." "INFO"
+    try {
+        # Check if module exists
+        $spoModule = Get-Module -ListAvailable -Name Microsoft.Online.SharePoint.PowerShell
+        if (-not $spoModule) {
+            Write-Log "Module not found, will use REST API instead..." "WARNING"
+            
+            # Use REST API approach
+            Write-Log "Using SharePoint Admin REST API..." "INFO"
+            $headers = @{
+                "Authorization" = "Bearer $token"
+                "Accept" = "application/json;odata=verbose"
+                "Content-Type" = "application/json;odata=verbose"
+            }
+            
+            # Call SharePoint Admin API
+            $apiUrl = "$adminUrl/_api/SPOSitePropertiesEnumerable/GetById('$siteUrl')"
+            Write-Log "API URL: $apiUrl" "INFO"
+            
+            # Note: This may not work as documented API may not support this property
+            Write-Log "⚠️ WARNING: SharePoint Admin REST API may not support conditional access properties" "WARNING"
+            Write-Log "This operation requires SharePoint Online Management Shell with admin privileges" "WARNING"
+            
+            throw "SharePoint Online Management Shell module not available in Azure Automation. Please install Microsoft.Online.SharePoint.PowerShell module in the Automation Account."
+            
+        } else {
+            Import-Module Microsoft.Online.SharePoint.PowerShell -ErrorAction Stop
+            Write-Log "✅ Module imported" "SUCCESS"
+            
+            # Connect to SharePoint Online
+            Write-Log "Connecting to SharePoint Online..." "INFO"
+            # Cannot use Managed Identity with SPO module directly
+            throw "Microsoft.Online.SharePoint.PowerShell does not support Managed Identity authentication. This requires a different approach."
+        }
+        
+    } catch {
+        Write-Log "❌ ERROR: $($_.Exception.Message)" "ERROR"
+        throw
+    }
+
+} catch {
+    Write-Log "❌ ERROR occurred" "ERROR"
+    Write-Log "Error Message: $($_.Exception.Message)" "ERROR"
+    
+    # Return error result
+    $errorResult = @{
+        Success = $false
+        Message = "Failed to apply Conditional Access Policy"
+        Error = $_.Exception.Message
+        SiteUrl = $siteUrl
+        RequestId = $requestId
+        Timestamp = (Get-Date -Format "yyyy-MM-dd HH:mm:ss")
+        Note = "Azure Automation with Managed Identity cannot directly call Set-SPOSite. Alternative: Use Azure Function with certificate-based app-only authentication, or use PnP PowerShell 2.x with app-only authentication."
+    }
+    
+    Write-Log "========================================" "INFO"
+    Write-Output ($errorResult | ConvertTo-Json)
+    
+    throw
+}
+'@
         
         $requestBody = $WebhookData.RequestBody
         if ($requestBody) {
@@ -181,6 +302,12 @@ $runbookName = "Apply-SiteConditionalAccess"
 Write-Host "`n📌 Creating Runbook: $runbookName..." -ForegroundColor Cyan
 
 try {
+    # Save runbook content to temp file with .ps1 extension
+    $tempFile = [IO.Path]::Combine([IO.Path]::GetTempPath(), "runbook-$(Get-Date -Format 'yyyyMMddHHmmss').ps1")
+    $runbookContent | Out-File -FilePath $tempFile -Encoding UTF8
+    
+    Write-Host "   Created temp file: $tempFile" -ForegroundColor Gray
+    
     # Check if runbook exists
     $existingRunbook = Get-AzAutomationRunbook `
         -ResourceGroupName $config.ResourceGroupName `
@@ -191,53 +318,35 @@ try {
     if ($existingRunbook) {
         Write-Host "   ℹ️  Runbook already exists, updating..." -ForegroundColor Yellow
         
-        # Import updated content
-        Import-AzAutomationRunbook `
-            -ResourceGroupName $config.ResourceGroupName `
-            -AutomationAccountName $config.AutomationAccountName `
-            -Name $runbookName `
-            -Type PowerShell `
-            -Path ([IO.Path]::GetTempFileName()) `
-            -Force `
-            -Published | Out-Null
-        
-    } else {
-        Write-Host "   Creating new runbook..." -ForegroundColor Yellow
-        
-        # Save runbook content to temp file
-        $tempFile = [IO.Path]::GetTempFileName()
-        $runbookContent | Out-File -FilePath $tempFile -Encoding UTF8
-        
-        # Import runbook
+        # Update existing runbook
         Import-AzAutomationRunbook `
             -ResourceGroupName $config.ResourceGroupName `
             -AutomationAccountName $config.AutomationAccountName `
             -Name $runbookName `
             -Type PowerShell `
             -Path $tempFile `
-            -Published | Out-Null
+            -Force | Out-Null
         
-        Remove-Item $tempFile
+    } else {
+        Write-Host "   Creating new runbook..." -ForegroundColor Yellow
+        
+        # Import new runbook
+        Import-AzAutomationRunbook `
+            -ResourceGroupName $config.ResourceGroupName `
+            -AutomationAccountName $config.AutomationAccountName `
+            -Name $runbookName `
+            -Type PowerShell `
+            -Path $tempFile | Out-Null
     }
-    
-    # Update runbook content
-    $tempFile = [IO.Path]::GetTempFileName()
-    $runbookContent | Out-File -FilePath $tempFile -Encoding UTF8
-    
-    Set-AzAutomationRunbookContent `
-        -ResourceGroupName $config.ResourceGroupName `
-        -AutomationAccountName $config.AutomationAccountName `
-        -Name $runbookName `
-        -Path $tempFile `
-        -Force | Out-Null
-    
-    Remove-Item $tempFile
     
     # Publish the runbook
     Publish-AzAutomationRunbook `
         -ResourceGroupName $config.ResourceGroupName `
         -AutomationAccountName $config.AutomationAccountName `
         -Name $runbookName | Out-Null
+    
+    # Clean up temp file
+    Remove-Item $tempFile -ErrorAction SilentlyContinue
     
     Write-Host "   ✅ Runbook created and published: $runbookName" -ForegroundColor Green
     

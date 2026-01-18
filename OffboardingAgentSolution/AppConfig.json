@@ -1,0 +1,8 @@
+{
+  "AppName": "SharePoint Site Export Tool",
+  "ClientId": "2cdb6dee-9c0d-45ba-a3eb-11aca2cc8ba8",
+  "ClientSecret": "",
+  "TenantId": "b22f8675-8375-455b-941a-67bee4cf7747",
+  "RedirectUri": "http://localhost",
+  "CreatedDate": "2025-12-18 18:09:59"
+}

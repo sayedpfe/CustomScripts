@@ -1,0 +1,11 @@
+{
+  "PrincipalId": "186afada-4f30-4de7-a23f-82de76031dda",
+  "TenantId": "b22f8675-8375-455b-941a-67bee4cf7747",
+  "Location": "EastUS",
+  "SubscriptionId": "476f3985-4e26-4f7d-8fcf-9f25f4da27a7",
+  "ResourceGroupName": "rg-sharepoint-automation",
+  "AutomationAccountName": "aa-spo-conditional-access",
+  "WebhookUrl": null,
+  "WebhookExpiry": "2027-01-12T21:07:17.9328413+01:00",
+  "RunbookName": "Apply-SiteConditionalAccess"
+}
