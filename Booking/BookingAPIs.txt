@@ -1,0 +1,486 @@
+================================================================================
+MICROSOFT BOOKINGS GRAPH API - COMPLETE ENDPOINT REFERENCE
+================================================================================
+Last Updated: January 18, 2026
+Documentation Source: Microsoft Learn
+API Version: v1.0
+
+NOTE: The Microsoft Bookings API in Microsoft Graph applies only to shared 
+bookings, NOT for personal bookings.
+
+================================================================================
+ADMIN ENDPOINTS (Business Management)
+================================================================================
+
+1. BOOKING BUSINESS ENDPOINTS
+   ============================
+
+   1.1 List All Booking Businesses
+   --------------------------------
+   GET https://graph.microsoft.com/v1.0/solutions/bookingBusinesses
+   Purpose: List all the booking businesses in the Microsoft 365 tenant
+   Required Permission: BookingsAppointment.ReadWrite.All or Bookings.Read.All
+   Response: Collection of bookingBusiness objects
+
+
+   1.2 Create a New Booking Business
+   ----------------------------------
+   POST https://graph.microsoft.com/v1.0/solutions/bookingBusinesses
+   Required Permission: Bookings.ReadWrite.All
+   Request Body Example:
+   {
+       "displayName": "Contoso"
+   }
+   Response: New bookingBusiness object with assigned ID
+
+
+   1.3 Get a Specific Booking Business
+   ------------------------------------
+   GET https://graph.microsoft.com/v1.0/solutions/bookingBusinesses/{businessId}
+   Required Permission: BookingsAppointment.ReadWrite.All or Bookings.Read.All
+   Response: Single bookingBusiness object with properties
+
+
+   1.4 Update Booking Business
+   ----------------------------
+   PATCH https://graph.microsoft.com/v1.0/solutions/bookingBusinesses/{businessId}
+   Required Permission: Bookings.ReadWrite.All
+   Purpose: Update business details such as display name, address, phone, etc.
+
+
+   1.5 Delete Booking Business
+   ----------------------------
+   DELETE https://graph.microsoft.com/v1.0/solutions/bookingBusinesses/{businessId}
+   Required Permission: Bookings.ReadWrite.All
+   Purpose: Delete a booking business
+
+
+   1.6 Publish Booking Business (Activate Scheduling Page)
+   --------------------------------------------------------
+   POST https://graph.microsoft.com/v1.0/solutions/bookingBusinesses/{businessId}/publish
+   Required Permission: Bookings.ReadWrite.All
+   Purpose: Make the scheduling page available to external customers
+   Effect: Sets isPublished to true and assigns publicUrl
+
+
+   1.7 Unpublish Booking Business (Deactivate Scheduling Page)
+   -----------------------------------------------------------
+   POST https://graph.microsoft.com/v1.0/solutions/bookingBusinesses/{businessId}/unpublish
+   Required Permission: Bookings.ReadWrite.All
+   Purpose: Make the scheduling page unavailable to external customers
+   Effect: Sets isPublished to false and publicUrl to null
+
+
+2. STAFF MEMBER ENDPOINTS
+   =======================
+
+   2.1 List All Staff Members for a Business
+   ------------------------------------------
+   GET https://graph.microsoft.com/v1.0/solutions/bookingBusinesses/{businessId}/staffMembers
+   Required Permission: BookingsAppointment.ReadWrite.All or Bookings.Read.All
+   Response: Collection of bookingStaffMember objects
+
+
+   2.2 Create a New Staff Member
+   -----------------------------
+   POST https://graph.microsoft.com/v1.0/solutions/bookingBusinesses/{businessId}/staffMembers
+   Required Permission: Bookings.ReadWrite.All
+   Request Body Example:
+   {
+       "displayName": "Dana Swope",
+       "emailAddress": "danas@contoso.com",
+       "role": "externalGuest"
+   }
+   Response: New bookingStaffMember object
+
+
+   2.3 Get a Specific Staff Member
+   --------------------------------
+   GET https://graph.microsoft.com/v1.0/solutions/bookingBusinesses/{businessId}/staffMembers/{staffMemberId}
+   Required Permission: BookingsAppointment.ReadWrite.All or Bookings.Read.All
+   Response: Single bookingStaffMember object
+
+
+   2.4 Update Staff Member
+   ------------------------
+   PATCH https://graph.microsoft.com/v1.0/solutions/bookingBusinesses/{businessId}/staffMembers/{staffMemberId}
+   Required Permission: Bookings.ReadWrite.All
+   Purpose: Update staff member details (name, availability, role, etc.)
+
+
+   2.5 Delete Staff Member
+   ------------------------
+   DELETE https://graph.microsoft.com/v1.0/solutions/bookingBusinesses/{businessId}/staffMembers/{staffMemberId}
+   Required Permission: Bookings.ReadWrite.All
+   Purpose: Remove a staff member from the business
+
+
+   2.6 Get Staff Availability
+   ---------------------------
+   GET https://graph.microsoft.com/v1.0/solutions/bookingBusinesses/{businessId}/getStaffAvailability
+   Required Permission: Bookings.ReadWrite.All
+   Purpose: Get availability information of staff members for a date range
+   Response: Collection of staffAvailabilityItem objects
+
+
+3. SERVICE ENDPOINTS
+   ==================
+
+   3.1 List All Services for a Business
+   ------------------------------------
+   GET https://graph.microsoft.com/v1.0/solutions/bookingBusinesses/{businessId}/services
+   Required Permission: BookingsAppointment.ReadWrite.All or Bookings.Read.All
+   Response: Collection of bookingService objects
+
+
+   3.2 Create a New Service
+   -------------------------
+   POST https://graph.microsoft.com/v1.0/solutions/bookingBusinesses/{businessId}/services
+   Required Permission: Bookings.ReadWrite.All
+   Request Body Example:
+   {
+       "displayName": "Bento"
+   }
+   Response: New bookingService object
+
+
+   3.3 Get a Specific Service
+   ---------------------------
+   GET https://graph.microsoft.com/v1.0/solutions/bookingBusinesses/{businessId}/services/{serviceId}
+   Required Permission: BookingsAppointment.ReadWrite.All or Bookings.Read.All
+   Response: Single bookingService object
+
+
+   3.4 Update Service
+   -------------------
+   PATCH https://graph.microsoft.com/v1.0/solutions/bookingBusinesses/{businessId}/services/{serviceId}
+   Required Permission: Bookings.ReadWrite.All
+   Purpose: Update service details (name, duration, pricing, etc.)
+
+
+   3.5 Delete Service
+   -------------------
+   DELETE https://graph.microsoft.com/v1.0/solutions/bookingBusinesses/{businessId}/services/{serviceId}
+   Required Permission: Bookings.ReadWrite.All
+   Purpose: Remove a service from the business
+
+
+4. CUSTOMER ENDPOINTS
+   ====================
+
+   4.1 List All Customers for a Business
+   --------------------------------------
+   GET https://graph.microsoft.com/v1.0/solutions/bookingBusinesses/{businessId}/customers
+   Required Permission: BookingsAppointment.ReadWrite.All or Bookings.Read.All
+   Response: Collection of bookingCustomer objects
+
+
+   4.2 Create a New Customer
+   --------------------------
+   POST https://graph.microsoft.com/v1.0/solutions/bookingBusinesses/{businessId}/customers
+   Required Permission: Bookings.ReadWrite.All
+   Request Body Example:
+   {
+       "displayName": "John Doe",
+       "emailAddress": "john@example.com",
+       "phones": [],
+       "addresses": []
+   }
+   Response: New bookingCustomer object
+
+
+   4.3 Get a Specific Customer
+   ----------------------------
+   GET https://graph.microsoft.com/v1.0/solutions/bookingBusinesses/{businessId}/customers/{customerId}
+   Required Permission: BookingsAppointment.ReadWrite.All or Bookings.Read.All
+   Response: Single bookingCustomer object
+
+
+   4.4 Update Customer
+   --------------------
+   PATCH https://graph.microsoft.com/v1.0/solutions/bookingBusinesses/{businessId}/customers/{customerId}
+   Required Permission: Bookings.ReadWrite.All
+   Purpose: Update customer information (name, email, addresses, phones)
+
+
+   4.5 Delete Customer
+   --------------------
+   DELETE https://graph.microsoft.com/v1.0/solutions/bookingBusinesses/{businessId}/customers/{customerId}
+   Required Permission: Bookings.ReadWrite.All
+   Purpose: Remove a customer from the business
+
+
+5. CUSTOM QUESTION ENDPOINTS
+   ==========================
+
+   5.1 List Custom Questions for a Business
+   -----------------------------------------
+   GET https://graph.microsoft.com/v1.0/solutions/bookingBusinesses/{businessId}/customQuestions
+   Required Permission: BookingsAppointment.ReadWrite.All or Bookings.Read.All
+   Response: Collection of bookingCustomQuestion objects
+
+
+   5.2 Create a Custom Question
+   ----------------------------
+   POST https://graph.microsoft.com/v1.0/solutions/bookingBusinesses/{businessId}/customQuestions
+   Required Permission: Bookings.ReadWrite.All
+   Purpose: Add custom booking questions customers must answer
+
+
+   5.3 Get a Specific Custom Question
+   -----------------------------------
+   GET https://graph.microsoft.com/v1.0/solutions/bookingBusinesses/{businessId}/customQuestions/{questionId}
+   Required Permission: BookingsAppointment.ReadWrite.All or Bookings.Read.All
+   Response: Single bookingCustomQuestion object
+
+
+   5.4 Update Custom Question
+   ---------------------------
+   PATCH https://graph.microsoft.com/v1.0/solutions/bookingBusinesses/{businessId}/customQuestions/{questionId}
+   Required Permission: Bookings.ReadWrite.All
+   Purpose: Modify custom question
+
+
+   5.5 Delete Custom Question
+   ---------------------------
+   DELETE https://graph.microsoft.com/v1.0/solutions/bookingBusinesses/{businessId}/customQuestions/{questionId}
+   Required Permission: Bookings.ReadWrite.All
+   Purpose: Remove a custom question
+
+
+================================================================================
+APPOINTMENT MANAGEMENT ENDPOINTS (Admin & End User)
+================================================================================
+
+6. APPOINTMENT ENDPOINTS
+   ======================
+
+   6.1 List All Appointments for a Business
+   -----------------------------------------
+   GET https://graph.microsoft.com/v1.0/solutions/bookingBusinesses/{businessId}/appointments
+   Required Permission: BookingsAppointment.ReadWrite.All or Bookings.Read.All
+   Response: Collection of bookingAppointment objects
+
+
+   6.2 Create a New Appointment (Admin)
+   ------------------------------------
+   POST https://graph.microsoft.com/v1.0/solutions/bookingBusinesses/{businessId}/appointments
+   Required Permission: Bookings.ReadWrite.All
+   Request Body Example:
+   {
+       "customerEmailAddress": "customer@example.com",
+       "customerName": "John Doe",
+       "serviceId": "{serviceId}",
+       "staffMemberIds": ["{staffMemberId}"],
+       "start": {
+           "dateTime": "2025-01-20T14:00:00",
+           "timeZone": "UTC"
+       },
+       "end": {
+           "dateTime": "2025-01-20T15:00:00",
+           "timeZone": "UTC"
+       }
+   }
+   Response: New bookingAppointment object
+
+
+   6.3 Get a Specific Appointment
+   -------------------------------
+   GET https://graph.microsoft.com/v1.0/solutions/bookingBusinesses/{businessId}/appointments/{appointmentId}
+   Required Permission: BookingsAppointment.ReadWrite.All or Bookings.Read.All
+   Response: Single bookingAppointment object with all details
+
+
+   6.4 Update an Appointment (Admin)
+   ---------------------------------
+   PATCH https://graph.microsoft.com/v1.0/solutions/bookingBusinesses/{businessId}/appointments/{appointmentId}
+   Required Permission: Bookings.ReadWrite.All
+   Purpose: Modify appointment details (time, staff, customer info, etc.)
+
+
+   6.5 Delete an Appointment
+   --------------------------
+   DELETE https://graph.microsoft.com/v1.0/solutions/bookingBusinesses/{businessId}/appointments/{appointmentId}
+   Required Permission: Bookings.ReadWrite.All
+   Purpose: Remove an appointment from the system
+
+
+   6.6 Cancel an Appointment
+   --------------------------
+   POST https://graph.microsoft.com/v1.0/solutions/bookingBusinesses/{businessId}/appointments/{appointmentId}/cancel
+   Required Permission: Bookings.ReadWrite.All
+   Purpose: Cancel an appointment (different from delete - maintains history)
+   Request Body: Can include cancellation message
+
+
+   6.7 Get Appointments in a Date Range (Calendar View)
+   ---------------------------------------------------
+   GET https://graph.microsoft.com/v1.0/solutions/bookingBusinesses/{businessId}/calendarView
+   Required Permission: BookingsAppointment.ReadWrite.All or Bookings.Read.All
+   Query Parameters:
+       - start (required): Start date/time
+       - end (required): End date/time
+   Response: Collection of bookingAppointment objects in the specified range
+
+
+================================================================================
+END USER ENDPOINTS (Customer-Facing)
+================================================================================
+
+7. CUSTOMER SELF-SERVICE ENDPOINTS
+   ================================
+
+   7.1 Get Published Booking Business Schedule (End User)
+   -------------------------------------------------------
+   GET https://graph.microsoft.com/v1.0/solutions/bookingBusinesses/{businessId}
+   Note: End users can view only if business isPublished = true
+   No Authentication Required: Public booking pages are accessible without auth
+
+
+   7.2 View Available Staff for a Service
+   ----------------------------------------
+   GET https://graph.microsoft.com/v1.0/solutions/bookingBusinesses/{businessId}/services/{serviceId}
+   Purpose: Customers can see available services and staff
+
+
+   7.3 View Staff Member Availability
+   -----------------------------------
+   GET https://graph.microsoft.com/v1.0/solutions/bookingBusinesses/{businessId}/staffMembers/{staffMemberId}
+   Purpose: Customers can check when staff members are available
+
+
+   7.4 Self-Service Appointment Creation
+   ======================================
+   POST https://graph.microsoft.com/v1.0/solutions/bookingBusinesses/{businessId}/appointments
+   Permission: Anonymous users can create appointments on published pages
+   Requirements:
+       - Business must be published (isPublished = true)
+       - publicUrl property contains the booking link
+       - Customer provides: name, email, service selection, preferred time
+
+
+   7.5 View Custom Questions Before Booking
+   ------------------------------------------
+   GET https://graph.microsoft.com/v1.0/solutions/bookingBusinesses/{businessId}/customQuestions
+   Purpose: Display custom questions customers must answer during booking
+
+
+================================================================================
+CURRENCY AND SCHEDULING POLICY ENDPOINTS
+================================================================================
+
+8. CURRENCY ENDPOINTS
+   ====================
+
+   8.1 Get Supported Currencies
+   ----------------------------
+   GET https://graph.microsoft.com/v1.0/solutions/bookingCurrencies
+   Required Permission: Bookings.Read.All or Bookings.ReadWrite.All
+   Response: Collection of bookingCurrency objects
+
+
+   8.2 Get Specific Currency
+   --------------------------
+   GET https://graph.microsoft.com/v1.0/solutions/bookingCurrencies/{currencyId}
+   Response: Single bookingCurrency object with symbol and code
+
+
+9. SCHEDULING POLICY ENDPOINTS
+   =============================
+
+   9.1 Update Scheduling Policy for Business
+   -------------------------------------------
+   PATCH https://graph.microsoft.com/v1.0/solutions/bookingBusinesses/{businessId}
+   Update Property: schedulingPolicy
+   Purpose: Configure booking rules, advance booking time, cancellation rules
+   Properties Can Configure:
+       - timeSlotInterval: Duration of time slots
+       - minimumLeadTime: Minimum advance booking required
+       - maximumAdvance: Maximum advance booking allowed
+       - sendConfirmationsToOwner: Owner notification preference
+       - allowStaffSelection: Allow customers to select staff member
+
+
+================================================================================
+AUTHENTICATION & PERMISSIONS
+================================================================================
+
+REQUIRED AZURE AD PERMISSIONS:
+==============================
+
+FOR ADMIN OPERATIONS:
+  - Bookings.ReadWrite.All (Full admin access)
+  - BookingsAppointment.ReadWrite.All (Appointment management)
+
+FOR READ-ONLY OPERATIONS:
+  - Bookings.Read.All
+  - BookingsAppointment.Read.All
+
+FOR END USERS (Self-Service Booking):
+  - No specific permission required
+  - Business must be published (isPublished = true)
+  - Access through public URL
+
+
+TOKEN REQUIREMENT:
+==================
+All API calls require: Authorization: Bearer {access_token}
+
+EXCEPT: Public scheduling pages can be accessed without authentication
+once the business is published.
+
+
+================================================================================
+COMMON WORKFLOW EXAMPLES
+================================================================================
+
+WORKFLOW 1: Setting Up a New Booking Business
+=============================================
+1. POST /bookingBusinesses → Create business
+2. POST /bookingBusinesses/{id}/staffMembers → Add staff
+3. POST /bookingBusinesses/{id}/services → Add services
+4. PATCH /bookingBusinesses/{id} → Configure business hours
+5. POST /bookingBusinesses/{id}/publish → Make public
+
+
+WORKFLOW 2: Managing Appointments (Admin)
+==========================================
+1. POST /bookingBusinesses/{id}/appointments → Create appointment
+2. GET /bookingBusinesses/{id}/appointments/{apptId} → View details
+3. PATCH /bookingBusinesses/{id}/appointments/{apptId} → Update
+4. POST /bookingBusinesses/{id}/appointments/{apptId}/cancel → Cancel
+
+
+WORKFLOW 3: Customer Self-Service Booking
+==========================================
+1. Customer visits {publicUrl} of published business
+2. Customer selects service
+3. Customer views staff availability
+4. Customer answers custom questions
+5. Customer creates appointment via POST /appointments
+6. Customer receives confirmation email
+
+
+================================================================================
+IMPORTANT NOTES
+================================================================================
+
+• Maximum staff members: 100 per booking business
+• API applies only to SHARED BOOKINGS, not personal bookings
+• All timestamps use ISO 8601 format and are in UTC
+• Phone numbers and addresses support multiple entries
+• Business must be published to be accessible via public URL
+• Deleting business deletes all related appointments, staff, customers
+• Customer email is required for appointment creation
+
+
+================================================================================
+ADDITIONAL RESOURCES
+================================================================================
+
+Graph Explorer: https://developer.microsoft.com/graph/graph-explorer
+Documentation: https://learn.microsoft.com/en-us/graph/api/resources/booking-api-overview
+Permissions Reference: https://learn.microsoft.com/en-us/graph/permissions-reference
+Auth Concepts: https://learn.microsoft.com/en-us/graph/auth/auth-concepts
+
+================================================================================
